@@ -358,8 +358,8 @@ const koreanStocks = [
 document.addEventListener('DOMContentLoaded', function() {
     loadStockHistory();
     setTimeout(() => {
-        // 실제 API 사용 여부 설정 (무료 Yahoo Finance API)
-        const useRealAPI = true; // 무료 API 바로 사용 가능
+        // 실제 API 사용 여부 설정 (CORS 문제로 임시 비활성)
+        const useRealAPI = false; // CORS 문제로 시뮬레이션 데이터 사용
         
         if (useRealAPI) {
             selectAndDisplayStockWithYahooAPI();
@@ -463,7 +463,7 @@ function displayRealStock(stock) {
     changeElement.textContent = `${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}% (${changeAmount >= 0 ? '+' : ''}${formatPrice(changeAmount)})`;
     changeElement.className = `price-change ${changePercent >= 0 ? 'positive' : 'negative'}`;
     
-    // 실제 지표 정보
+    // 실제 지표 정보 (null 체크 추가)
     document.getElementById('volatility').textContent = `${stock.volatility ? stock.volatility.toFixed(2) : 'N/A'}%`;
     document.getElementById('volumeIncrease').textContent = `${stock.volumeIncrease ? stock.volumeIncrease.toFixed(1) : 'N/A'}%`;
     document.getElementById('themeScore').textContent = `${stock.themeScore ? stock.themeScore.toFixed(1) : 'N/A'}/15`;
