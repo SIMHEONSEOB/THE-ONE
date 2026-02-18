@@ -333,4 +333,9 @@ function generateDailyReviews() {
     console.log('일일 복기 생성 완료:', review.title);
 }
 
-export { ReviewGenerator, reviewGenerator, generateAndSaveReview, displayReviews, scheduleReviewGeneration };
+// 전역으로 함수 노출 (ES 모듈 문제 해결)
+window.ReviewGenerator = ReviewGenerator;
+window.reviewGenerator = reviewGenerator;
+window.generateAndSaveReview = generateAndSaveReview;
+window.displayReviews = displayReviews;
+window.scheduleReviewGeneration = scheduleReviewGeneration;

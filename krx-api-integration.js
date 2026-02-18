@@ -493,4 +493,7 @@ function calculateTechnicalScore(indicators) {
     return Math.min(score, 10); // 최대 10점
 }
 
-export { KRXStockAPI, krxAPI, selectBestStockWithRealAPI };
+// 전역으로 함수 노출 (ES 모듈 문제 해결)
+window.KRXStockAPI = KRXStockAPI;
+window.krxAPI = krxAPI;
+window.selectBestStockWithRealAPI = selectBestStockWithRealAPI;
