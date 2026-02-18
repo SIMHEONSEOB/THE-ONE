@@ -31,11 +31,11 @@ const koreanStocks = [
 document.addEventListener('DOMContentLoaded', function() {
     loadStockHistory();
     setTimeout(() => {
-        // 실제 API 사용 여부 설정 (개발 중에는 false로 설정)
-        const useRealAPI = false; // true로 변경하면 실제 API 사용
+        // 실제 API 사용 여부 설정 (무료 Yahoo Finance API)
+        const useRealAPI = true; // 무료 API 바로 사용 가능
         
         if (useRealAPI) {
-            selectAndDisplayStockWithAPI();
+            selectAndDisplayStockWithYahooAPI();
         } else {
             selectAndDisplayStock();
         }
@@ -90,10 +90,10 @@ function selectBestStock() {
     return scores[0];
 }
 
-// 실제 API를 사용한 주식 표시
-async function selectAndDisplayStockWithAPI() {
+// Yahoo Finance API를 사용한 주식 표시
+async function selectAndDisplayStockWithYahooAPI() {
     try {
-        const selectedStock = await selectBestStockWithRealAPI();
+        const selectedStock = await selectBestStockWithYahooAPI();
         if (selectedStock) {
             displayRealStock(selectedStock);
         } else {
@@ -101,7 +101,7 @@ async function selectAndDisplayStockWithAPI() {
             selectAndDisplayStock();
         }
     } catch (error) {
-        console.error('API 기반 종목 선택 실패:', error);
+        console.error('Yahoo Finance API 기반 종목 선택 실패:', error);
         selectAndDisplayStock(); // 시뮬레이션으로 폴백
     }
     
