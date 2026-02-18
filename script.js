@@ -357,6 +357,7 @@ const koreanStocks = [
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     loadStockHistory();
+    loadTodayStock(); // 오늘의 추천 종목 로드
     setTimeout(() => {
         // 실제 API 사용 여부 설정 (CORS 문제로 임시 비활성)
         const useRealAPI = false; // CORS 문제로 시뮬레이션 데이터 사용
@@ -364,10 +365,79 @@ document.addEventListener('DOMContentLoaded', function() {
         if (useRealAPI) {
             selectAndDisplayStockWithYahooAPI();
         } else {
-            selectAndDisplayStock();
+            selectAndDisplayTodayStock(); // 오늘의 종목 표시
         }
     }, 2000); // 2초 후 로딩 완료
 });
+
+// 오늘의 추천 종목 로드
+function loadTodayStock() {
+    const today = new Date().toDateString(); // 날짜만 비교 (시간 제외)
+    const saved = localStorage.getItem('todayStock');
+    
+    if (saved) {
+        const todayStock = JSON.parse(saved);
+        const savedDate = new Date(todayStock.date).toDateString();
+        
+        // 오늘 날짜이면 저장된 종목 사용
+        if (savedDate === today) {
+            console.log('오늘의 추천 종목 로드됨:', todayStock.name);
+            return todayStock;
+        }
+    }
+    
+    // 오늘 날짜가 아니거나 저장된 종목이 없으면 새로 생성
+    console.log('새로운 추천 종목 생성');
+    return null;
+}
+
+// 오늘의 추천 종목 저장
+function saveTodayStock(stock) {
+    const todayStock = {
+        date: new Date().toISOString(),
+        stock: stock
+    };
+    localStorage.setItem('todayStock', JSON.stringify(todayStock));
+    console.log('오늘의 추천 종목 저장됨:', stock.name);
+}
+
+// 오늘의 추천 종목 표시 함수
+function selectAndDisplayTodayStock() {
+    // 먼저 저장된 오늘 종목 확인
+    const savedTodayStock = loadTodayStock();
+    
+    if (savedTodayStock) {
+        // 저장된 종목이 있으면 표시
+        displayStock(savedTodayStock.stock);
+        console.log('오늘의 추천 종목 유지:', savedTodayStock.stock.name);
+    } else {
+        // 없으면 새로 생성하고 저장
+        const newStock = selectBestStock();
+        saveTodayStock(newStock);
+        displayStock(newStock);
+        console.log('새로운 추천 종목 생성:', newStock.name);
+    }
+    
+    // 로딩 화면 숨기고 주식 정보 표시
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('stockCard').style.display = 'block';
+}
+
+// 자정에 오늘의 추천 종목 초기화 (매일 0시에 실행)
+function scheduleDailyReset() {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    
+    const msUntilMidnight = tomorrow - now;
+    
+    setTimeout(() => {
+        localStorage.removeItem('todayStock');
+        console.log('오늘의 추천 종목 초기화됨');
+        scheduleDailyReset(); // 다음 날을 위해 다시 스케줄
+    }, msUntilMidnight);
+}
 
 // 주식 히스토리 로드
 function loadStockHistory() {
@@ -824,14 +894,17 @@ function showMain() {
     document.getElementById('reviewsSection').style.display = 'none';
 }
 
-// 새로고침 기능 (매일 새로운 종목)
+// 새로고침 기능 (오늘의 종목 초기화)
 function refreshStock() {
-    document.getElementById('loading').style.display = 'block';
-    document.getElementById('stockCard').style.display = 'none';
-    
-    setTimeout(() => {
-        selectAndDisplayStock();
-    }, 1500);
+    if (confirm('오늘의 추천 종목을 초기화하고 새로운 종목을 추천하시겠습니까?')) {
+        localStorage.removeItem('todayStock');
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('stockCard').style.display = 'none';
+        
+        setTimeout(() => {
+            selectAndDisplayTodayStock();
+        }, 1500);
+    }
 }
 
 // 키보드 단축키
@@ -860,4 +933,4 @@ function scheduleDailyRefresh() {
 }
 
 // 스케줄 시작
-scheduleDailyRefresh();
+scheduleDailyReset();
