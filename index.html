@@ -7,9 +7,20 @@
     <meta name="description" content="대한민국에서 가장 단호한 주식 가이드. 수많은 노이즈를 제거하고 오직 단 하나의 종목만 추천합니다.">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- AdSense 스크립트 제거 (로컬 개발에서는 사용 안함) -->
+    <!-- AdSense 스크립트 (개발 환경에서는 비활성화) -->
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
             crossorigin="anonymous"></script> -->
+    <script>
+        // AdSense 설정
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.google_ad_client = "ca-pub-XXXXXXXXXXXXXXXX";
+        
+        // 광고 성과 추적
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
