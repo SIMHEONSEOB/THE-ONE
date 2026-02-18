@@ -1,0 +1,41 @@
+{
+  "name": "the-one-stock",
+  "version": "1.0.0",
+  "description": "오늘의 단 한 종목 - 대한민국에서 가장 단호한 주식 가이드",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js & python -m http.server 8000",
+    "server": "node server.js",
+    "client": "python -m http.server 8000"
+  },
+  "keywords": [
+    "stock",
+    "korean-stock",
+    "investment",
+    "finance",
+    "trading",
+    "api",
+    "cors",
+    "proxy"
+  ],
+  "author": "SIMHEONSEOB",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SIMHEONSEOB/THE-ONE.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SIMHEONSEOB/THE-ONE/issues"
+  },
+  "homepage": "https://simheonseob.github.io/THE-ONE/"
+}

@@ -359,8 +359,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadStockHistory();
     loadTodayStock(); // 오늘의 추천 종목 로드
     setTimeout(() => {
-        // 실제 API 사용 여부 설정 (CORS 문제로 임시 비활성)
-        const useRealAPI = false; // CORS 문제로 시뮬레이션 데이터 사용
+        // 실제 API 사용 여부 설정 (서버사이드 프록시 사용)
+        const useRealAPI = true; // 이제 실시간 API 사용 가능!
         
         if (useRealAPI) {
             selectAndDisplayStockWithYahooAPI();
@@ -490,27 +490,87 @@ function selectBestStock() {
 // Yahoo Finance API를 사용한 주식 표시
 async function selectAndDisplayStockWithYahooAPI() {
     try {
-        // Yahoo Finance API 함수가 있는지 확인
-        if (typeof selectBestStockWithYahooAPI === 'function') {
-            const selectedStock = await selectBestStockWithYahooAPI();
-            if (selectedStock) {
-                displayRealStock(selectedStock);
-            } else {
-                // API 실패 시 시뮬레이션으로 폴백
-                selectAndDisplayStock();
+        // 프록시 서버를 통해 데이터 가져오기
+        const selectedStock = await selectBestStockWithProxyAPI();
+        if (selectedStock) {
+            displayRealStock(selectedStock);
+            // 새로운 추천 알림
+            if (typeof notifyNewStock === 'function') {
+                notifyNewStock(selectedStock);
             }
         } else {
-            console.warn('Yahoo Finance API 함수를 찾을 수 없습니다. 시뮬레이션 데이터를 사용합니다.');
-            selectAndDisplayStock();
+            // API 실패 시 시뮬레이션으로 폴백
+            selectAndDisplayTodayStock();
         }
     } catch (error) {
         console.error('Yahoo Finance API 기반 종목 선택 실패:', error);
-        selectAndDisplayStock(); // 시뮬레이션으로 폴백
+        selectAndDisplayTodayStock(); // 시뮬레이션으로 폴백
     }
     
     // 로딩 화면 숨기고 주식 정보 표시
     document.getElementById('loading').style.display = 'none';
     document.getElementById('stockCard').style.display = 'block';
+}
+
+// 프록시 서버를 통해 주식 선택
+async function selectBestStockWithProxyAPI() {
+    try {
+        console.log('프록시 서버로 주식 데이터 가져오기 시작...');
+        
+        // 프록시 서버 API 호출
+        const response = await fetch('http://localhost:3001/api/stocks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codes: koreanStocks.map(s => s.code)
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success || !result.data || result.data.length === 0) {
+            console.warn('프록시 서버 데이터를 가져오지 못해 시뮬레이션 데이터를 사용합니다.');
+            return null;
+        }
+        
+        console.log(`${result.data.length}개 종목 데이터 가져오기 성공`);
+        
+        // 각 종목에 대한 기술적 지표 계산
+        const stocksWithIndicators = result.data.map(stock => {
+            const indicators = calculateTechnicalIndicators(stock);
+            
+            return {
+                ...stock,
+                volatility: indicators.volatility || 0,
+                volumeIncrease: indicators.volumeRatio || 0,
+                themeScore: Math.random() * 10 + 5, // 테마 점수는 랜덤
+                technicalScore: calculateTechnicalScore(indicators),
+                actualData: true
+            };
+        });
+        
+        // 종합 점수 계산
+        const scoredStocks = stocksWithIndicators.map(stock => ({
+            ...stock,
+            totalScore: (stock.volatility * 0.3) + 
+                       (stock.volumeIncrease * 0.4) + 
+                       (stock.themeScore * 0.2) +
+                       (stock.technicalScore * 0.1)
+        }));
+        
+        // 최고 점수의 주식 선택
+        scoredStocks.sort((a, b) => b.totalScore - a.totalScore);
+        const bestStock = scoredStocks[0];
+        
+        console.log('선택된 최고 종목:', bestStock.name, '점수:', bestStock.totalScore);
+        return bestStock;
+        
+    } catch (error) {
+        console.error('프록시 서버 기반 종목 선택 실패:', error);
+        return null;
+    }
 }
 
 // 실제 API 데이터로 주식 정보 표시
