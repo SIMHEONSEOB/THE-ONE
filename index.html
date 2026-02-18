@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The One - 오늘의 단 한 종목</title>
+    <meta name="description" content="대한민국에서 가장 단호한 주식 가이드. 수많은 노이즈를 제거하고 오직 단 하나의 종목만 추천합니다.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>The One</h1>
+                <p class="tagline">오늘의 단 한 종목</p>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn" onclick="showHistory()">히스토리</button>
+                <button class="nav-btn" onclick="showReviews()">복기</button>
+                <button class="nav-btn" onclick="showAbout()">소개</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2 class="hero-title">우리는 뻔한 이야기를 하지 않습니다</h2>
+                    <p class="hero-subtitle">오직 하나에 집중합니다</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="stock-section" id="stockSection">
+            <div class="container">
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <p>시장 데이터 분석 중...</p>
+                </div>
+                
+                <div class="stock-card" id="stockCard" style="display: none;">
+                    <div class="stock-header">
+                        <div class="stock-date" id="stockDate"></div>
+                        <div class="stock-badge">TODAY'S PICK</div>
+                    </div>
+                    
+                    <div class="stock-info">
+                        <div class="stock-name">
+                            <h3 id="stockName"></h3>
+                            <p id="stockCode"></p>
+                        </div>
+                        <div class="stock-price">
+                            <span id="currentPrice"></span>
+                            <span id="priceChange" class="price-change"></span>
+                        </div>
+                    </div>
+
+                    <div class="stock-metrics">
+                        <div class="metric">
+                            <span class="metric-label">예상 변동성</span>
+                            <span class="metric-value" id="volatility"></span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">거래량 증가율</span>
+                            <span class="metric-value" id="volumeIncrease"></span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">테마 연관도</span>
+                            <span class="metric-value" id="themeScore"></span>
+                        </div>
+                    </div>
+
+                    <div class="stock-chart">
+                        <canvas id="stockChart"></canvas>
+                    </div>
+
+                    <div class="ad-banner">
+                        <!-- Google AdSense - Header Banner -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                             data-ad-slot="XXXXXXXXXX"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+
+                    <div class="stock-analysis">
+                        <h4>핵심 분석</h4>
+                        <p id="analysisText"></p>
+                    </div>
+
+                    <div class="ad-banner sidebar-ad">
+                        <!-- Google AdSense - Sidebar -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                             data-ad-slot="XXXXXXXXXX"
+                             data-ad-format="rectangle"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="history-section" id="historySection" style="display: none;">
+            <div class="container">
+                <h2>추천 히스토리</h2>
+                <div class="history-grid" id="historyGrid">
+                    <!-- 히스토리 데이터가 동적으로 채워집니다 -->
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section" id="aboutSection" style="display: none;">
+            <div class="container">
+                <h2>The One에 대하여</h2>
+                <div class="about-content">
+                    <p>The One은 대한민국에서 가장 단호한 주식 가이드입니다.</p>
+                    <p>수많은 정보 속에서 투자자들이 겪는 '결정 장애'를 해결하기 위해 태어났습니다.</p>
+                    <p>우리는 매일 수천 개의 종목을 분석하여 오직 단 하나의 종목만을 추천합니다.</p>
+                    <div class="principles">
+                        <h3>우리의 원칙</h3>
+                        <ul>
+                            <li>하나에 집중한다</li>
+                            <li>데이터로 말한다</li>
+                            <li>솔직하게 복기한다</li>
+                            <li>책임감을 가진다</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <section class="reviews-section" id="reviewsSection" style="display: none;">
+            <div class="container">
+                <h2>투자 복기</h2>
+                <div class="reviews-container" id="reviewsContainer">
+                    <!-- 복기 콘텐츠가 동적으로 채워집니다 -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 The One. 모든 투자의 책임은 투자자 본인에게 있습니다.</p>
+        </div>
+    </footer>
+
+    <script src="review-generator.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
