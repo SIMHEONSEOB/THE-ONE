@@ -79,7 +79,7 @@ The One은 개인 투자자들이 겪는 '결정 장애'를 해결하기 위해 
 ## � 라이브 데모
 
 ### 🌐 Online Demo
-**URL**: https://simheonseob.github.io/THE-ONE/
+**URL**: https://the-one-5kl.pages.dev/
 
 ### 📱 주요 기능
 1. **오늘의 추천**: 하루 동안 유지되는 단일 종목 추천
@@ -306,4 +306,4 @@ The One 프로젝트에 관심을 가져주셔서 감사합니다. 더 나은 �
 **The One - 오늘의 단 한 종목**  
 *대한민국에서 가장 단호한 주식 가이드*
 
-🚀 **[라이브 데모](https://simheonseob.github.io/THE-ONE/)** | 📱 **모든 기기 지원** | 🎯 **단일 종목 전문**
+🚀 **[라이브 데모](https://the-one-5kl.pages.dev/)** | 📱 **모든 기기 지원** | 🎯 **단일 종목 전문**
