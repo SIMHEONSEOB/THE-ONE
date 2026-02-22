@@ -195,8 +195,11 @@ class CorsBypassAPI {
 // 전역 인스턴스
 const corsBypassAPI = new CorsBypassAPI();
 
-// CORS 우회 방식으로 최고 종목 선택
-async function selectBestStockWithCORSBypass() {
+// 전역 함수로 내보내기
+window.selectBestStockWithCORSBypass = selectBestStockWithCORSBypassExternal;
+
+// CORS 우회 방식으로 최고 종목 선택 (외부 API)
+async function selectBestStockWithCORSBypassExternal() {
     try {
         console.log('CORS 우회 방식으로 주식 데이터 가져오기 시작...');
         
