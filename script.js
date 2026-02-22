@@ -225,18 +225,8 @@ async function selectBestStockWithCORSBypass() {
         return null;
     }
 }
-                currentPrice: currentPrice,
-                change: change,
-                changePercent: changePercent,
-                volume: volume,
-                marketCap: meta.marketCap || 0,
-                highPrice: meta.regularMarketDayHigh || 0,
-                lowPrice: meta.regularMarketDayLow || 0,
-                openPrice: meta.regularMarketOpen || 0,
-                previousClose: meta.chartPreviousClose || 0,
-                currency: meta.currency || 'KRW',
-                historicalData: historicalData,
-                actualData: true,
+
+// 한국 주식 데이터
                 source: 'Yahoo Finance'
             };
         } catch (error) {
