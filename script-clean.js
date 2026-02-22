@@ -56,7 +56,7 @@ async function selectAndDisplayStockWithCORSBypass() {
     try {
         console.log('CORS 우회 방식으로 주식 데이터 가져오기 시작...');
         
-        const selectedStock = await selectBestStockWithCORSBypass();
+        const selectedStock = await selectBestStockWithCORSBypassLocal();
         if (selectedStock) {
             displayRealStock(selectedStock);
             if (typeof notifyNewStock === 'function') {
@@ -77,7 +77,7 @@ async function selectAndDisplayStockWithCORSBypass() {
 }
 
 // CORS 우회 방식으로 최고 종목 선택
-async function selectBestStockWithCORSBypass() {
+async function selectBestStockWithCORSBypassLocal() {
     try {
         console.log('CORS 우회 방식으로 주식 데이터 가져오기 시작...');
         
