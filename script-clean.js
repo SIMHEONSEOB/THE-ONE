@@ -21,10 +21,10 @@ const koreanStocks = [
 document.addEventListener('DOMContentLoaded', function() {
     loadStockHistory();
     loadTodayStock();
-    setTimeout(() => {
-        // CORS 우회 방식으로 실시간 API 사용
-        selectAndDisplayStockWithCORSBypass();
-    }, 2000);
+    // CORS 우회 기능 잠시 비활성화 - 시뮬레이션 데이터만 사용
+    // setTimeout(() => {
+    //     selectAndDisplayStockWithCORSBypass();
+    // }, 2000);
 });
 
 // 오늘의 추천 종목 로드
