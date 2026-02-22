@@ -79,11 +79,13 @@ async function selectAndDisplayStockWithCORSBypass() {
 // CORS 우회 방식으로 최고 종목 선택
 async function selectBestStockWithCORSBypass() {
     try {
-        // cors-bypass-api.js의 함수 사용
-        if (typeof selectBestStockWithCORSBypass === 'function') {
+        console.log('CORS 우회 방식으로 주식 데이터 가져오기 시작...');
+        
+        // cors-bypass-api.js의 전역 함수 사용
+        if (typeof window.selectBestStockWithCORSBypass === 'function') {
             return await window.selectBestStockWithCORSBypass();
         } else {
-            console.warn('CORS 우회 API를 찾을 수 없음');
+            console.warn('CORS 우회 API를 찾을 수 없음, 시뮬레이션으로 폴백');
             return null;
         }
     } catch (error) {
