@@ -1,0 +1,6 @@
+google.com, pub-7396122483481566, DIRECT, f08c47fec0942fa0
+
+# Google AdSense Publisher ID
+# This file authorizes Google to display ads on this domain
+# Publisher: THE-ONE Stock Recommendation System
+# Domain: the-one-5kl.pages.dev
