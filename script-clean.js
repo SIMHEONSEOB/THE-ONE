@@ -138,29 +138,43 @@ function displayStock(stock) {
     currentStock = stock;
     
     // 기본 정보 설정
-    document.getElementById('stockName').textContent = stock.name;
-    document.getElementById('stockCode').textContent = stock.code;
-    document.getElementById('stockDate').textContent = new Date().toLocaleDateString('ko-KR');
+    const stockNameElement = document.getElementById('stockName');
+    const stockCodeElement = document.getElementById('stockCode');
+    const stockDateElement = document.getElementById('stockDate');
+    
+    if (stockNameElement) stockNameElement.textContent = stock.name;
+    if (stockCodeElement) stockCodeElement.textContent = stock.code;
+    if (stockDateElement) stockDateElement.textContent = new Date().toLocaleDateString('ko-KR');
     
     // 가격 정보
     const currentPrice = stock.currentPrice || 0;
     const changePercent = stock.changePercent || 0;
     const changeAmount = stock.change || 0;
     
-    document.getElementById('currentPrice').textContent = formatPrice(currentPrice);
-    
+    const currentPriceElement = document.getElementById('currentPrice');
     const changeElement = document.getElementById('priceChange');
-    changeElement.textContent = `${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}% (${changeAmount >= 0 ? '+' : ''}${formatPrice(changeAmount)})`;
-    changeElement.className = `price-change ${changePercent >= 0 ? 'positive' : 'negative'}`;
+    
+    if (currentPriceElement) currentPriceElement.textContent = formatPrice(currentPrice);
+    
+    if (changeElement) {
+        changeElement.textContent = `${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}% (${changeAmount >= 0 ? '+' : ''}${formatPrice(changeAmount)})`;
+        changeElement.className = `price-change ${changePercent >= 0 ? 'positive' : 'negative'}`;
+    }
     
     // 거래량
-    document.getElementById('volume').textContent = formatVolume(stock.volume);
+    const volumeElement = document.getElementById('volume');
+    if (volumeElement) volumeElement.textContent = formatVolume(stock.volume);
     
     // 기술적 지표
-    document.getElementById('volatility').textContent = `${stock.volatility?.toFixed(2) || 0}%`;
-    document.getElementById('volumeIncrease').textContent = `${stock.volumeIncrease?.toFixed(1) || 0}%`;
-    document.getElementById('themeScore').textContent = stock.themeScore?.toFixed(1) || 0;
-    document.getElementById('technicalScore').textContent = stock.technicalScore?.toFixed(1) || 0;
+    const volatilityElement = document.getElementById('volatility');
+    const volumeIncreaseElement = document.getElementById('volumeIncrease');
+    const themeScoreElement = document.getElementById('themeScore');
+    const technicalScoreElement = document.getElementById('technicalScore');
+    
+    if (volatilityElement) volatilityElement.textContent = `${stock.volatility?.toFixed(2) || 0}%`;
+    if (volumeIncreaseElement) volumeIncreaseElement.textContent = `${stock.volumeIncrease?.toFixed(1) || 0}%`;
+    if (themeScoreElement) themeScoreElement.textContent = stock.themeScore?.toFixed(1) || 0;
+    if (technicalScoreElement) technicalScoreElement.textContent = stock.technicalScore?.toFixed(1) || 0;
     
     // 차트 생성
     createChart(stock);
@@ -223,7 +237,13 @@ function formatVolume(volume) {
 
 // 차트 생성
 function createChart(stock) {
-    const ctx = document.getElementById('stockChart').getContext('2d');
+    const ctx = document.getElementById('stockChart');
+    if (!ctx) {
+        console.warn('stockChart 요소를 찾을 수 없음');
+        return;
+    }
+    
+    const chartCtx = ctx.getContext('2d');
     
     if (stockChart) {
         stockChart.destroy();
@@ -247,7 +267,7 @@ function createChart(stock) {
     // 마지막 데이터는 현재 가격
     data[data.length - 1] = stock.currentPrice || 50000;
     
-    stockChart = new Chart(ctx, {
+    stockChart = new Chart(chartCtx, {
         type: 'line',
         data: {
             labels: labels,
@@ -342,7 +362,12 @@ function calculateTechnicalScore(indicators) {
 // 분석 리포트 생성
 function generateAnalysis(stock) {
     const indicators = calculateTechnicalIndicators(stock);
-    const analysis = document.getElementById('analysis');
+    const analysisElement = document.getElementById('analysisText');
+    
+    if (!analysisElement) {
+        console.warn('analysisText 요소를 찾을 수 없음');
+        return;
+    }
     
     let report = `<h3>📊 ${stock.name} 기술적 분석</h3>`;
     
@@ -383,7 +408,7 @@ function generateAnalysis(stock) {
     const dataSource = stock.actualData ? '실시간 Yahoo Finance API' : '시뮬레이션 데이터';
     report += `<p class="data-source">📡 데이터 출처: ${dataSource} | 업데이트: ${new Date().toLocaleString('ko-KR')}</p>`;
     
-    analysis.innerHTML = report;
+    analysisElement.innerHTML = report;
 }
 
 // 기타 유틸리티 함수들
