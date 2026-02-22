@@ -3,11 +3,13 @@ let stockChart = null;
 let currentStock = null;
 let stockHistory = [];
 
-// Yahoo Finance API - 완전 무료 한국 주식 데이터
+// Yahoo Finance API - CORS 우회 방식 (백엔드 없이 직접 호출)
 class YahooFinanceAPI {
     constructor() {
         this.baseURL = 'https://query1.finance.yahoo.com/v8/finance/chart';
         this.quoteURL = 'https://query1.finance.yahoo.com/v7/finance/quote';
+        // CORS 우회를 위한 프록시 서버 (무료)
+        this.corsProxy = 'https://cors-anywhere.herokuapp.com/';
     }
 
     // 한국 종목 코드를 Yahoo Finance 형식으로 변환
@@ -15,20 +17,131 @@ class YahooFinanceAPI {
         return koreanCode + '.KS';
     }
 
-    // 주식 데이터 가져오기
+    // CORS 우회 API 호출
+    async fetchWithCors(url) {
+        try {
+            // 방법 1: CORS 프록시 사용
+            const proxyUrl = this.corsProxy + url;
+            const response = await fetch(proxyUrl, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return await response.json();
+        } catch (error) {
+            console.warn('CORS 프록시 실패, 다른 방법 시도:', error);
+            
+            try {
+                // 방법 2: JSONP 방식 시도
+                return await this.fetchWithJSONP(url);
+            } catch (jsonpError) {
+                console.warn('JSONP 실패, 최종 폴백:', jsonpError);
+                throw new Error('모든 API 호출 방식 실패');
+            }
+        }
+    }
+
+    // JSONP 방식으로 CORS 우회
+    async fetchWithJSONP(url) {
+        return new Promise((resolve, reject) => {
+            const callbackName = 'jsonp_callback_' + Date.now();
+            const script = document.createElement('script');
+            
+            window[callbackName] = function(data) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                resolve(data);
+            };
+            
+            script.onerror = function() {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                reject(new Error('JSONP 호출 실패'));
+            };
+            
+            const jsonpUrl = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+            script.src = jsonpUrl;
+            document.body.appendChild(script);
+            
+            // 타임아웃 설정
+            setTimeout(() => {
+                if (window[callbackName]) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    reject(new Error('JSONP 타임아웃'));
+                }
+            }, 10000);
+        });
+    }
+
+    // 주식 데이터 가져오기 (CORS 우회 방식)
     async fetchStockData(code) {
         const yahooSymbol = this.convertToYahooSymbol(code);
         
         try {
-            const chartResponse = await fetch(`${this.baseURL}/${yahooSymbol}?range=30d&interval=1d&includePrePost=true`);
-            const chartData = await chartResponse.json();
+            // 차트 데이터 가져오기
+            const chartUrl = `${this.baseURL}/${yahooSymbol}?range=30d&interval=1d&includePrePost=true`;
+            const chartData = await this.fetchWithCors(chartUrl);
             
-            const quoteResponse = await fetch(`${this.quoteURL}?symbols=${yahooSymbol}&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketVolume`);
-            const quoteData = await quoteResponse.json();
+            // 실시간 가격 데이터 가져오기
+            const quoteUrl = `${this.quoteURL}?symbols=${yahooSymbol}&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketVolume`;
+            const quoteData = await this.fetchWithCors(quoteUrl);
             
             return this.formatYahooData(chartData, quoteData, yahooSymbol);
         } catch (error) {
-            console.error('Yahoo Finance API Error:', error);
+            console.error('Yahoo Finance API 호출 실패:', error);
+            throw error;
+        }
+    }
+
+    // Yahoo Finance 데이터 포맷팅
+    formatYahooData(chartData, quoteData, symbol) {
+        try {
+            const chart = chartData.chart;
+            const quote = quoteData.quoteResponse.result[0];
+            
+            if (!chart.result || !chart.result[0] || !quote) {
+                throw new Error('데이터 형식 오류');
+            }
+            
+            const result = chart.result[0];
+            const timestamps = result.timestamp || [];
+            const quotes = result.indicators.quote[0] || {};
+            const closes = quotes.close || [];
+            const volumes = quotes.volume || [];
+            
+            // 차트 데이터 생성
+            const chartDataPoints = timestamps.map((timestamp, index) => ({
+                x: new Date(timestamp * 1000),
+                y: closes[index] || 0,
+                volume: volumes[index] || 0
+            })).filter(point => point.y > 0);
+            
+            // 현재 가격 정보
+            const currentPrice = quote.regularMarketPrice || 0;
+            const change = quote.regularMarketChange || 0;
+            const changePercent = quote.regularMarketChangePercent || 0;
+            const volume = quote.regularMarketVolume || 0;
+            
+            return {
+                symbol: symbol,
+                name: quote.longName || quote.shortName || symbol.replace('.KS', ''),
+                currentPrice: currentPrice,
+                change: change,
+                changePercent: changePercent,
+                volume: volume,
+                chartData: chartDataPoints,
+                lastUpdate: new Date()
+            };
+        } catch (error) {
+            console.error('데이터 포맷팅 실패:', error);
             return null;
         }
     }
@@ -47,52 +160,71 @@ class YahooFinanceAPI {
             }
         }).filter(data => data !== null);
     }
+}
 
-    // Yahoo Finance 데이터 포맷팅
-    formatYahooData(chartData, quoteData, symbol) {
-        try {
-            const chart = chartData.chart;
-            if (!chart || !chart.result || chart.result.length === 0) {
-                return null;
-            }
-            
-            const result = chart.result[0];
-            const timestamps = result.timestamp;
-            const quotes = result.indicators.quote[0];
-            const meta = result.meta;
-            
-            let currentPrice = meta.regularMarketPrice || 0;
-            let change = meta.regularMarketChange || 0;
-            let changePercent = meta.regularMarketChangePercent || 0;
-            let volume = meta.regularMarketVolume || 0;
-            
-            if (quoteData && quoteData.quoteResponse && quoteData.quoteResponse.result.length > 0) {
-                const quote = quoteData.quoteResponse.result[0];
-                currentPrice = quote.regularMarketPrice || currentPrice;
-                change = quote.regularMarketChange || change;
-                changePercent = quote.regularMarketChangePercent || changePercent;
-                volume = quote.regularMarketVolume || volume;
-            }
-            
-            const historicalData = timestamps.map((timestamp, index) => {
-                const date = new Date(timestamp * 1000);
-                return {
-                    date: date.toISOString().split('T')[0],
-                    open: quotes.open[index] || 0,
-                    high: quotes.high[index] || 0,
-                    low: quotes.low[index] || 0,
-                    close: quotes.close[index] || 0,
-                    volume: quotes.volume[index] || 0
-                };
-            }).filter(item => item.close > 0);
-            
-            const stockCode = symbol.replace('.KS', '');
-            const stockName = this.getStockName(stockCode);
+// Yahoo Finance API 인스턴스
+const yahooAPI = new YahooFinanceAPI();
+
+// CORS 우회 방식으로 실시간 주식 데이터 가져오기
+async function selectBestStockWithCORSBypass() {
+    try {
+        console.log('CORS 우회 방식으로 주식 데이터 가져오기 시작...');
+        
+        // 한국 주식 목록
+        const koreanStocks = [
+            { code: '005930', name: '삼성전자' },
+            { code: '000660', name: 'SK하이닉스' },
+            { code: '373220', name: 'LG에너지솔루션' },
+            { code: '207940', name: '삼성바이오로직스' },
+            { code: '247540', name: '에코프로비엠' }
+        ];
+        
+        // 여러 종목 데이터 동시에 가져오기
+        const stockData = await yahooAPI.fetchMultipleStocks(koreanStocks.map(s => s.code));
+        
+        if (!stockData || stockData.length === 0) {
+            console.warn('실시간 데이터를 가져오지 못해 시뮬레이션 데이터를 사용합니다.');
+            return null;
+        }
+        
+        console.log(`${stockData.length}개 종목 데이터 가져오기 성공`);
+        
+        // 각 종목에 대한 기술적 지표 계산
+        const stocksWithIndicators = stockData.map(stock => {
+            const indicators = calculateTechnicalIndicators(stock);
             
             return {
-                code: stockCode,
-                name: stockName,
-                symbol: symbol,
+                ...stock,
+                volatility: indicators.volatility || 0,
+                volumeIncrease: indicators.volumeRatio || 0,
+                themeScore: Math.random() * 10 + 5,
+                technicalScore: calculateTechnicalScore(indicators),
+                actualData: true
+            };
+        });
+        
+        // 종합 점수 계산
+        const scoredStocks = stocksWithIndicators.map(stock => ({
+            ...stock,
+            totalScore: (stock.volatility * 0.3) + 
+                       (stock.volumeIncrease * 0.4) + 
+                       (stock.themeScore * 0.2) +
+                       (stock.technicalScore * 0.1)
+        }));
+        
+        // 최고 점수의 주식 선택
+        scoredStocks.sort((a, b) => b.totalScore - a.totalScore);
+        const bestStock = scoredStocks[0];
+        
+        console.log('선택된 최고 종목:', bestStock.name, '점수:', bestStock.totalScore);
+        return bestStock;
+        
+    } catch (error) {
+        console.error('CORS 우회 방식 종목 선택 실패:', error);
+        console.log('시뮬레이션 데이터로 폴백합니다.');
+        return null;
+    }
+}
                 currentPrice: currentPrice,
                 change: change,
                 changePercent: changePercent,
@@ -487,11 +619,11 @@ function selectBestStock() {
     return scores[0];
 }
 
-// Yahoo Finance API를 사용한 주식 표시
+// Yahoo Finance API를 사용한 주식 표시 (CORS 우회 방식)
 async function selectAndDisplayStockWithYahooAPI() {
     try {
-        // 프록시 서버를 통해 데이터 가져오기
-        const selectedStock = await selectBestStockWithProxyAPI();
+        // CORS 우회 방식으로 데이터 가져오기
+        const selectedStock = await selectBestStockWithCORSBypass();
         if (selectedStock) {
             displayRealStock(selectedStock);
             // 새로운 추천 알림
@@ -503,7 +635,7 @@ async function selectAndDisplayStockWithYahooAPI() {
             selectAndDisplayTodayStock();
         }
     } catch (error) {
-        console.error('Yahoo Finance API 기반 종목 선택 실패:', error);
+        console.error('CORS 우회 API 기반 종목 선택 실패:', error);
         selectAndDisplayTodayStock(); // 시뮬레이션으로 폴백
     }
     

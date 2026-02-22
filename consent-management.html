@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동의 관리 - The One</title>
+    <meta name="google-adsense-account" content="ca-pub-7396122483481566">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- AdSense 스크립트 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7396122483481566"
+            crossorigin="anonymous"></script>
+    <!-- Google CMP 동의 관리 -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        
+        // 동의 기본값 설정 (GDPR 준수)
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied'
+        });
+        
+        // 지역 설정
+        gtag('set', 'region', 'KR');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="nav-brand">
+                    <a href="index.html">The One</a>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">홈</a>
+                    <a href="about.html">소개</a>
+                    <a href="contact.html">문의</a>
+                    <a href="terms.html">이용약관</a>
+                    <a href="privacy.html">개인정보처리방침</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="legal-content">
+            <div class="legal-header">
+                <h1>동의 관리</h1>
+                <p>개인정보 처리 및 광고 동의 설정을 관리합니다</p>
+            </div>
+
+            <div class="legal-body">
+                <section>
+                    <h2>개인정보 및 쿠키 동의</h2>
+                    <p>The One은 사용자의 개인정보를 보호하고 관련 법규를 준수하기 위해 최선을 다하고 있습니다. 당사는 다음과 같은 목적으로 개인정보를 수집하고 사용합니다:</p>
+                    
+                    <div class="consent-categories">
+                        <div class="consent-item">
+                            <h3>📊 필수 쿠키</h3>
+                            <p>웹사이트 기본 기능 운영에 필수적인 쿠키입니다. 사용자 동의 없이도 사용됩니다.</p>
+                            <ul>
+                                <li>사용자 인증</li>
+                                <li>보안 유지</li>
+                                <li>웹사이트 기본 기능</li>
+                            </ul>
+                        </div>
+
+                        <div class="consent-item">
+                            <h3>📈 분석 쿠키</h3>
+                            <p>웹사이트 사용 방식을 이해하고 개선하는 데 사용됩니다.</p>
+                            <ul>
+                                <li>방문자 수 통계</li>
+                                <li>인기 페이지 분석</li>
+                                <li>사용자 경험 개선</li>
+                            </ul>
+                            <div class="consent-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="analyticsConsent">
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="toggle-label">동의</span>
+                            </div>
+                        </div>
+
+                        <div class="consent-item">
+                            <h3>🎯 광고 쿠키</h3>
+                            <p>관심 있는 광고를 표시하고 광고 수익을 창출하는 데 사용됩니다.</p>
+                            <ul>
+                                <li>개인화된 광고</li>
+                                <li>광고 효과 측정</li>
+                                <li>수익 창출</li>
+                            </ul>
+                            <div class="consent-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="adConsent">
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="toggle-label">동의</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>동의 옵션</h2>
+                    <div class="consent-options">
+                        <button class="consent-btn accept-all" onclick="acceptAll()">
+                            모두 동의
+                        </button>
+                        <button class="consent-btn reject-all" onclick="rejectAll()">
+                            모두 거부
+                        </button>
+                        <button class="consent-btn save-preferences" onclick="savePreferences()">
+                            선택 저장
+                        </button>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>동의 철회</h2>
+                    <p>언제든지 동의를 철회할 수 있습니다:</p>
+                    <ul>
+                        <li>브라우저 쿠키 삭제</li>
+                        <li>아래 동의 설정 변경</li>
+                        <li>개인정보처리방침에 명시된 방법으로 문의</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>법적 근거</h2>
+                    <p>당사는 다음 법적 근거에 따라 개인정보를 처리합니다:</p>
+                    <ul>
+                        <li><strong>정당한 이익:</strong> 웹사이트 운영 및 개선</li>
+                        <li><strong>동의:</strong> 광고 및 분석 목적의 데이터 처리</li>
+                        <li><strong>법적 의무:</strong> 관련 법규 준수</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>데이터 보호</h2>
+                    <p>당사는 다음 조치를 통해 데이터를 보호합니다:</p>
+                    <ul>
+                        <li>SSL 암호화 통신</li>
+                        <li>정기적인 보안 검토</li>
+                        <li>직원 교육 및 접근 제어</li>
+                        <li>데이터 최소화 원칙 적용</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>문의 및 연락</h2>
+                    <p>개인정보 처리 및 동의 관련 문의는 다음을 통해 접수합니다:</p>
+                    <div class="contact-info">
+                        <p><strong>GitHub Issues:</strong> <a href="https://github.com/SIMHEONSEOB/THE-ONE/issues" target="_blank">https://github.com/SIMHEONSEOB/THE-ONE/issues</a></p>
+                        <p><strong>문의하기:</strong> <a href="contact.html">문의하기 페이지</a></p>
+                        <p><strong>개인정보처리방침:</strong> <a href="privacy.html">개인정보처리방침 보기</a></p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="legal-footer">
+                <p>본 동의 관리 정책은 2024년 2월 22일부터 시행됩니다.</p>
+                <a href="index.html" class="back-btn">홈으로 돌아가기</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2024 The One. 모든 권리 보유.</p>
+                <div class="footer-links">
+                    <a href="about.html">소개</a>
+                    <a href="contact.html">문의</a>
+                    <a href="terms.html">이용약관</a>
+                    <a href="privacy.html">개인정보처리방침</a>
+                    <a href="consent-management.html">동의 관리</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 동의 상태 관리
+        function getConsentStatus() {
+            const consent = localStorage.getItem('userConsent');
+            return consent ? JSON.parse(consent) : {
+                analytics: false,
+                advertising: false
+            };
+        }
+
+        function setConsentStatus(analytics, advertising) {
+            const consent = { analytics, advertising };
+            localStorage.setItem('userConsent', JSON.stringify(consent));
+            
+            // Google Tag Manager에 동의 전달
+            gtag('consent', 'update', {
+                'analytics_storage': analytics ? 'granted' : 'denied',
+                'ad_storage': advertising ? 'granted' : 'denied',
+                'ad_user_data': advertising ? 'granted' : 'denied',
+                'ad_personalization': advertising ? 'granted' : 'denied'
+            });
+        }
+
+        // 페이지 로드 시 동의 상태 표시
+        document.addEventListener('DOMContentLoaded', function() {
+            const consent = getConsentStatus();
+            document.getElementById('analyticsConsent').checked = consent.analytics;
+            document.getElementById('adConsent').checked = consent.advertising;
+        });
+
+        // 동의 함수들
+        function acceptAll() {
+            setConsentStatus(true, true);
+            document.getElementById('analyticsConsent').checked = true;
+            document.getElementById('adConsent').checked = true;
+            alert('모든 쿠키 사용에 동의하셨습니다.');
+        }
+
+        function rejectAll() {
+            setConsentStatus(false, false);
+            document.getElementById('analyticsConsent').checked = false;
+            document.getElementById('adConsent').checked = false;
+            alert('모든 쿠키 사용을 거부하셨습니다.');
+        }
+
+        function savePreferences() {
+            const analytics = document.getElementById('analyticsConsent').checked;
+            const advertising = document.getElementById('adConsent').checked;
+            setConsentStatus(analytics, advertising);
+            alert('동의 설정이 저장되었습니다.');
+        }
+
+        // 개별 동의 변경 시 자동 저장
+        document.getElementById('analyticsConsent').addEventListener('change', function() {
+            const advertising = document.getElementById('adConsent').checked;
+            setConsentStatus(this.checked, advertising);
+        });
+
+        document.getElementById('adConsent').addEventListener('change', function() {
+            const analytics = document.getElementById('analyticsConsent').checked;
+            setConsentStatus(analytics, this.checked);
+        });
+    </script>
+
+    <style>
+        .consent-categories {
+            margin: 2rem 0;
+        }
+
+        .consent-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .consent-item h3 {
+            margin-bottom: 0.5rem;
+            color: #ff6b6b;
+        }
+
+        .consent-item ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .consent-toggle {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #ff6b6b;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label {
+            margin-left: 1rem;
+            font-weight: bold;
+        }
+
+        .consent-options {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .consent-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .accept-all {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+        }
+
+        .reject-all {
+            background: #333;
+            color: white;
+        }
+
+        .save-preferences {
+            background: #555;
+            color: white;
+        }
+
+        .consent-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</body>
+</html>

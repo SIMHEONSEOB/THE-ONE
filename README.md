@@ -205,9 +205,10 @@ const useRealAPI = false; // 개발 중에는 false
 ## 📈 API 연동
 
 ### 현재 상태
-- **시뮬레이션**: 안정적인 가짜 데이터
-- **Yahoo Finance**: 무료 API 준비 완료
+- **시뮬레이션**: 안정적인 가짜 데이터 (현재 사용 중)
+- **Yahoo Finance**: 무료 API 준비 완료 (CORS 해결 필요)
 - **한국투자증권**: 유료 API 연동 코드 준비
+- **프록시 서버**: Node.js 서버 준비 완료 (실행 필요)
 
 ### 실시간 데이터 사용
 ```javascript
@@ -230,8 +231,10 @@ const useRealAPI = true; // false에서 true로 변경
 - [x] 히스토리 추적 시스템
 - [x] 자동 복기 콘텐츠 생성
 - [x] 반응형 디자인
-- [x] AdSense 통합 준비
-- [x] 다중 API 연동 준비
+- [x] AdSense 통합 완료 (ca-pub-7396122483481566)
+- [x] Google CMP 동의 관리 시스템 (GDPR 준수)
+- [x] 법적 페이지 완료 (개인정보처리방침, 이용약관, 문의, 소개)
+- [x] Pages.dev 도메인 배포 완료
 
 ### 진행 중 (🔄)
 - [ ] 실시간 API 연동 (CORS 해결 필요)

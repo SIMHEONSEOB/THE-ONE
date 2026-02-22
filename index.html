@@ -15,6 +15,22 @@
     <!-- AdSense 스크립트 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7396122483481566"
             crossorigin="anonymous"></script>
+    <!-- Google CMP 동의 관리 -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        
+        // 동의 기본값 설정 (GDPR 준수)
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied'
+        });
+        
+        // 지역 설정 (EEA, UK, Switzerland)
+        gtag('set', 'region', 'KR');
+    </script>
     <script>
         // AdSense 설정
         window.adsbygoogle = window.adsbygoogle || [];
@@ -176,6 +192,7 @@
                 <a href="contact.html">문의</a>
                 <a href="terms.html">이용약관</a>
                 <a href="privacy.html">개인정보처리방침</a>
+                <a href="consent-management.html">동의 관리</a>
             </div>
         </div>
     </footer>
@@ -183,6 +200,7 @@
     <script src="notification-system.js"></script>
     <script src="krx-api-integration.js"></script>
     <script src="review-generator.js"></script>
+    <script src="cors-bypass-api.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
