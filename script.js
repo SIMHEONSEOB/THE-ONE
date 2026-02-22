@@ -569,7 +569,8 @@ async function selectBestStockWithProxyAPI() {
         
     } catch (error) {
         console.error('프록시 서버 기반 종목 선택 실패:', error);
-        return null;
+        console.log('시뮬레이션 데이터로 폴백합니다.');
+        return null; // 명시적으로 null 반환하여 폴백 처리
     }
 }
 

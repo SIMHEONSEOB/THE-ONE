@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 - The One</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="nav-brand">
+                    <a href="index.html">The One</a>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">홈</a>
+                    <a href="about.html">소개</a>
+                    <a href="contact.html" class="active">문의</a>
+                    <a href="terms.html">이용약관</a>
+                    <a href="privacy.html">개인정보처리방침</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="contact-content">
+            <div class="contact-header">
+                <h1>문의하기</h1>
+                <p>The One에 대한 문의사항을 접수합니다.</p>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2>연락처 정보</h2>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="method-icon">📧</div>
+                            <div class="method-details">
+                                <h3>GitHub Issues</h3>
+                                <p>기술적 문제, 버그 리포트, 기능 제안</p>
+                                <a href="https://github.com/SIMHEONSEOB/THE-ONE/issues" target="_blank" class="contact-link">
+                                    https://github.com/SIMHEONSEOB/THE-ONE/issues
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">💬</div>
+                            <div class="method-details">
+                                <h3>서비스 문의</h3>
+                                <p>서비스 이용, 제휴 문의, 일반 문의</p>
+                                <span class="contact-link">추후 공개 예정</span>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">🐦</div>
+                            <div class="method-details">
+                                <h3>소셜 미디어</h3>
+                                <p>업데이트 소식, 커뮤니티 소통</p>
+                                <span class="contact-link">추후 개설 예정</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h2>문의 양식</h2>
+                    <form id="contactForm" class="form">
+                        <div class="form-group">
+                            <label for="name">이름 *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">이메일 *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type">문의 유형 *</label>
+                            <select id="type" name="type" required>
+                                <option value="">선택하세요</option>
+                                <option value="bug">버그 리포트</option>
+                                <option value="feature">기능 제안</option>
+                                <option value="service">서비스 문의</option>
+                                <option value="partnership">제휴 문의</option>
+                                <option value="other">기타</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">제목 *</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">내용 *</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <label for="privacy">개인정보처리방침에 동의합니다 *</label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">문의하기</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <h2>자주 묻는 질문</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>Q. 추천된 종목의 정확도는 어떻게 되나요?</h3>
+                        <p>A. The One은 과거 데이터를 기반으로 분석하지만, 미래 수익을 보장하지 않습니다. 모든 투자 결정은 사용자 본인의 책임입니다.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Q. 실시간 데이터는 언제부터 제공되나요?</h3>
+                        <p>A. 현재 시뮬레이션 데이터를 제공하고 있으며, 실시간 API 연동은 기술적 문제 해결 후 순차적으로 제공될 예정입니다.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Q. 모바일 앱은 언제 출시되나요?</h3>
+                        <p>A. 웹 서비스 안정화 후 모바일 앱 개발을 계획하고 있으며, 2024년 하반기 출시를 목표로 하고 있습니다.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Q. 제휴 문의는 어떻게 하나요?</h3>
+                        <p>A. 금융 기관, 미디어, 기술 파트너십 등 제휴 문의는 GitHub Issues 또는 이메일을 통해 접수하고 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="response-info">
+                <h2>응답 안내</h2>
+                <div class="response-grid">
+                    <div class="response-item">
+                        <h3>응답 시간</h3>
+                        <p>평균 24시간 이내 (영업일 기준)</p>
+                    </div>
+                    <div class="response-item">
+                        <h3>응답 방식</h3>
+                        <p>이메일 또는 GitHub Issues</p>
+                    </div>
+                    <div class="response-item">
+                        <h3>긴급 문의</h3>
+                        <p>GitHub Issues에 '긴급' 태그 추가</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2024 The One. 모든 권리 보유.</p>
+                <div class="footer-links">
+                    <a href="about.html">소개</a>
+                    <a href="contact.html">문의</a>
+                    <a href="terms.html">이용약관</a>
+                    <a href="privacy.html">개인정보처리방침</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 폼 데이터 수집
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // GitHub Issues로 리디렉션
+            const issueTitle = `[${data.type}] ${data.subject}`;
+            const issueBody = `
+문의 유형: ${data.type}
+이름: ${data.name}
+이메일: ${data.email}
+
+내용:
+${data.message}
+---
+*본 문의는 웹사이트 문의 양식을 통해 접수되었습니다.*
+            `;
+            
+            const githubIssueUrl = `https://github.com/SIMHEONSEOB/THE-ONE/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
+            
+            window.open(githubIssueUrl, '_blank');
+            
+            // 알림 표시
+            alert('GitHub Issues 페이지로 이동하여 문의를 제출해주세요. 빠른 시일 내에 답변드리겠습니다.');
+        });
+    </script>
+</body>
+</html>
