@@ -491,11 +491,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loadStockHistory();
     loadTodayStock(); // 오늘의 추천 종목 로드
     setTimeout(() => {
-        // 실제 API 사용 여부 설정 (서버사이드 프록시 사용)
-        const useRealAPI = true; // 이제 실시간 API 사용 가능!
+        // 실제 API 사용 여부 설정 (CORS 우회 방식 사용)
+        const useRealAPI = true; // CORS 우회 방식으로 실시간 API 사용!
         
         if (useRealAPI) {
-            selectAndDisplayStockWithYahooAPI();
+            selectAndDisplayStockWithYahooAPI(); // CORS 우회 방식
         } else {
             selectAndDisplayTodayStock(); // 오늘의 종목 표시
         }
